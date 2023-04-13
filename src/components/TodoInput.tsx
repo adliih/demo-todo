@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { service } from "../services/TodoService";
 
 /**
  * Form for input
@@ -15,7 +16,9 @@ export function TodoInput() {
 
     console.log("Creating todo of: ", todo);
 
-    // FIXME call insert todo
+    await service.create({
+      value: todo,
+    });
 
     setTodo("");
   };

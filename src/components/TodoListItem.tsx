@@ -5,6 +5,7 @@ import {
   useState,
 } from "react";
 import { TodoItem } from "../models";
+import { service } from "../services/TodoService";
 
 /**
  * Render the editable and deleteable todo item
@@ -17,7 +18,7 @@ export function TodoListItem({ todoItem }: { todoItem: TodoItem }) {
 
     console.log("Deleting todo: ", todoItem);
 
-    // FIXME call delete todo
+    await service.delete(todoItem.id);
 
     console.log("Todo Deleted: ", todoItem);
   };
@@ -37,7 +38,7 @@ export function TodoListItem({ todoItem }: { todoItem: TodoItem }) {
 
     console.log("Updating todo", todoItem, "into", updatedTodo);
 
-    // FIXME call update todo
+    await service.update(updatedTodo);
 
     console.log("Todo updated", updatedTodo);
   };
