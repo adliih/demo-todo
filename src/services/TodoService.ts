@@ -1,24 +1,28 @@
-import { TodoItem } from "../models";
+import { useState } from "react";
+import { TodoItem, User } from "../models";
 import * as db from "./firebase/db";
 
 const firebaseCollectionId = "todo";
 
 export const service = {
-  observe: (observer: (items: TodoItem[]) => {}): void => {
-    db.observeData(firebaseCollectionId, {
+  useItems(user: User) {
+    const [items, setItems] = useState<TodoItem[]>([]);
+    db.observeData(firebaseCollectionId, user.id, {
       next({ docs }) {
         const items = docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
         }));
 
-        observer(items as TodoItem[]);
+        setItems(items as TodoItem[]);
       },
     });
+
+    return { items };
   },
 
-  create: async (item: Omit<TodoItem, "id">): Promise<TodoItem> => {
-    const doc = await db.insertDatum(firebaseCollectionId, item);
+  create: async (item: Omit<TodoItem, "id">, user: User): Promise<TodoItem> => {
+    const doc = await db.insertDatum(firebaseCollectionId, user.id, item);
 
     return {
       ...item,
@@ -26,11 +30,13 @@ export const service = {
     };
   },
 
-  update: async (item: TodoItem): Promise<void> => {
-    return db.updateDatum(firebaseCollectionId, item);
+  update: async (item: TodoItem, user: User): Promise<void> => {
+    return db.updateDatum(firebaseCollectionId, user.id, {
+      ...item,
+    });
   },
 
-  delete: async (id: string): Promise<void> => {
-    return db.deleteDatum(firebaseCollectionId, id);
+  delete: async (id: string, user: User): Promise<void> => {
+    return db.deleteDatum(firebaseCollectionId, user.id, id);
   },
 };

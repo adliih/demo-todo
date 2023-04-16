@@ -10,7 +10,13 @@ import { service } from "../services/TodoService";
 /**
  * Render the editable and deleteable todo item
  */
-export function TodoListItem({ todoItem }: { todoItem: TodoItem }) {
+export function TodoListItem({
+  todoItem,
+  user,
+}: {
+  todoItem: TodoItem;
+  user: any;
+}) {
   const handleOnclick = async (
     e: ReactMouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -18,7 +24,7 @@ export function TodoListItem({ todoItem }: { todoItem: TodoItem }) {
 
     console.log("Deleting todo: ", todoItem);
 
-    await service.delete(todoItem.id);
+    await service.delete(todoItem.id, user);
 
     console.log("Todo Deleted: ", todoItem);
   };
@@ -38,7 +44,7 @@ export function TodoListItem({ todoItem }: { todoItem: TodoItem }) {
 
     console.log("Updating todo", todoItem, "into", updatedTodo);
 
-    await service.update(updatedTodo);
+    await service.update(updatedTodo, user);
 
     console.log("Todo updated", updatedTodo);
   };

@@ -1,26 +1,17 @@
 import { TodoListItem } from ".";
-import { useState, useEffect } from "react";
-import { TodoItem } from "../models";
+import { User } from "../models";
 import { service } from "../services/TodoService";
 
 /**
  * Listing all available todos
  */
-export function TodoList() {
-  const [items, setItems] = useState<TodoItem[]>([]);
-
-  const observeItems = async () => {
-    service.observe(async (items) => setItems(items));
-  };
-
-  useEffect(() => {
-    observeItems();
-  }, []);
+export function TodoList({ user }: { user: User }) {
+  const { items } = service.useItems(user);
 
   return (
     <ul>
       {items.map((item) => (
-        <TodoListItem key={item.id} todoItem={item} />
+        <TodoListItem key={item.id} todoItem={item} user={user} />
       ))}
     </ul>
   );

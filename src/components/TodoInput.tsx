@@ -1,10 +1,11 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { service } from "../services/TodoService";
+import { User } from "../models";
 
 /**
  * Form for input
  */
-export function TodoInput() {
+export function TodoInput({ user }: { user: User }) {
   const [todo, setTodo] = useState<string>("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -16,9 +17,12 @@ export function TodoInput() {
 
     console.log("Creating todo of: ", todo);
 
-    await service.create({
-      value: todo,
-    });
+    await service.create(
+      {
+        value: todo,
+      },
+      user
+    );
 
     setTodo("");
   };
