@@ -11,6 +11,7 @@
     "test": "NODE_ENV=test vitest"
   },
   "dependencies": {
+    "@picocss/pico": "^1.5.9",
     "firebase": "^9.19.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
